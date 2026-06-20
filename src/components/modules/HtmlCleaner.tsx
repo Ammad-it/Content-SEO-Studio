@@ -131,7 +131,13 @@ export function HtmlCleaner() {
 
         {/* OUTPUT */}
         <Card className="flex flex-col h-full border-muted/60 shadow-sm overflow-hidden bg-gradient-to-b from-card to-card/50">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => {
+              if (typeof value === "string") setActiveTab(value)
+            }}
+            className="flex flex-col h-full"
+          >
             <CardHeader className="py-3 px-4 border-b bg-muted/20 flex flex-row items-center justify-between space-y-0">
               <TabsList className="h-9 bg-background/50 border border-border/50">
                 <TabsTrigger value="clean" className="text-xs px-3">Clean HTML</TabsTrigger>
