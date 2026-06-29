@@ -104,7 +104,7 @@ export function FeatureImage() {
 
               <div className="space-y-2">
                 <Label htmlFor="style">Style Preset</Label>
-                <Select value={style} onValueChange={(value) => value && setStyle(value)}>
+                <Select value={style} onValueChange={(val) => setStyle(val || '')}>
                   <SelectTrigger className="bg-background/50 focus:bg-background">
                     <SelectValue placeholder="Select style" />
                   </SelectTrigger>
@@ -123,7 +123,7 @@ export function FeatureImage() {
 
               <div className="space-y-2">
                 <Label htmlFor="size">Image Dimensions</Label>
-                <Select value={size} onValueChange={(value) => value && setSize(value)}>
+                <Select value={size} onValueChange={(val) => setSize(val || '')}>
                   <SelectTrigger className="bg-background/50 focus:bg-background">
                     <SelectValue placeholder="Select size" />
                   </SelectTrigger>

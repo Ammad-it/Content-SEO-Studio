@@ -95,7 +95,7 @@ export function SeoGenerator() {
 
               <div className="space-y-2">
                 <Label htmlFor="country">Target Country</Label>
-                <Select value={country} onValueChange={(value) => value && setCountry(value)}>
+                <Select value={country} onValueChange={(val) => setCountry(val || 'Global')}>
                   <SelectTrigger className="bg-background/50">
                     <SelectValue placeholder="Select country" />
                   </SelectTrigger>

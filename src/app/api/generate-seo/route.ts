@@ -2,11 +2,33 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { content, keyword, country } = await req.json();
+    const { content, keyword, country, type } = await req.json();
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: 'GEMINI_API_KEY is not configured in .env.local' }, { status: 500 });
+    }
+
+    // Handle summary requests from HTML Cleaner
+    if (type === 'summary') {
+      const summaryPrompt = `Summarize the following content in exactly 2-3 concise sentences for SEO purposes. Focus on the main topic, key points, and target audience. Return ONLY the summary text, nothing else.\n\nContent:\n${content.substring(0, 3000)}`;
+
+      const summaryRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: summaryPrompt }] }],
+        })
+      });
+
+      if (!summaryRes.ok) {
+        const errJson = await summaryRes.json().catch(() => null);
+        throw new Error(errJson?.error?.message || "Failed to generate summary");
+      }
+
+      const summaryData = await summaryRes.json();
+      const summaryText = summaryData.candidates?.[0]?.content?.parts?.[0]?.text;
+      return NextResponse.json({ summary: summaryText?.trim() || '' });
     }
 
     const prompt = `
